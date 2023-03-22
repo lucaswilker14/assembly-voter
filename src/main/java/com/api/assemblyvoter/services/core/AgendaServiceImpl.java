@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Map;
 
 @Service
 public class AgendaServiceImpl implements AgendaService {
@@ -31,8 +32,19 @@ public class AgendaServiceImpl implements AgendaService {
         LOGGER.info("Starting the creation of the new Agenda");
         AgendaModel newAgenda = new AgendaModel();
         BeanUtils.copyProperties(agendaDTO, newAgenda);
-        newAgenda.setAssociateVotes(Collections.emptySet());
+        newAgenda.setAssociateVotes(Collections.emptyMap());
         return agendaRepository.save(newAgenda);
+    }
+
+    @Override
+    public responseAgendaResultDTO votingResult(Long id) {
+        agendaRepository.findById(id).ifPresent(agendaModel -> {
+            responseAgendaResultDTO resultDTO = new responseAgendaResultDTO();
+            resultDTO.setTitle(agendaModel.getTitle());
+            Long a = agendaModel.getAssociateVotes().entrySet().stream().filter(map -> map.getValue().equals("SIM")).count();
+            LOGGER.info("TESTE");
+        });
+        return null;
     }
 
 }

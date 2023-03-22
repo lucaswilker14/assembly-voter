@@ -8,4 +8,6 @@ public interface AgendaService {
 
     AgendaModel createNewAgenda(AgendaDTO agendaDTO);
 
+    responseAgendaResultDTO votingResult(Long id);
+
 }
