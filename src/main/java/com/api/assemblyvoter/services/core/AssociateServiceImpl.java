@@ -2,18 +2,19 @@ package com.api.assemblyvoter.services.core;
 
 import com.api.assemblyvoter.dto.VoteDTO;
 import com.api.assemblyvoter.models.AssociateModel;
+import com.api.assemblyvoter.repositories.AgendaRepository;
 import com.api.assemblyvoter.repositories.AssociateRepository;
 import com.api.assemblyvoter.services.AssociateService;
+import com.api.assemblyvoter.utils.WebFluxUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class AssociateServiceImpl implements AssociateService {
@@ -22,12 +23,15 @@ public class AssociateServiceImpl implements AssociateService {
 
     private final AssociateRepository associateRepository;
 
-    private final WebClient webClient;
+    private final AgendaRepository agendaRepository;
+
+    private final WebFluxUtils webFluxUtils;
 
     @Autowired
-    public AssociateServiceImpl(WebClient webClient, AssociateRepository associateRepository) {
-        this.webClient = webClient;
+    public AssociateServiceImpl(AssociateRepository associateRepository, AgendaRepository agendaRepository, WebFluxUtils webFluxUtils) {
         this.associateRepository = associateRepository;
+        this.agendaRepository = agendaRepository;
+        this.webFluxUtils = webFluxUtils;
     };
 
     @Override
@@ -36,24 +40,40 @@ public class AssociateServiceImpl implements AssociateService {
     }
 
     @Override
-    public String vote(VoteDTO voteDTO) {
-        //checa se o cpf pode votar
+    public List<AssociateModel> getAssociates() {
+        return associateRepository.findAll();
+    }
 
+    @Override
+    public void deleteAll() {
+        associateRepository.deleteAll();
+    }
 
-        //se puder, cadastra o voto na tabela
-        //retorna VOTO_COMPUTED
+    @Override
+    public HashMap<String, String> statusVote(String cpf) {
+        return webFluxUtils.ableToVote(cpf);
+    }
 
-        //se nao puder, retorna error.
-        return null;
+    @Override
+    public Object vote(VoteDTO voteDTO) {
+        String cpf = voteDTO.getAssociateCpf();
+        String vote = voteDTO.getVote();
+        Long agenda_id = Long.parseLong(voteDTO.getAgendaId());
+
+        boolean canVote = webFluxUtils.canVote(cpf) && getAssociate(cpf).isPresent();
+
+        if (canVote) {
+            getAssociate(cpf).ifPresent(ass -> {
+                ass.getAgendaVotes().put(getAgendaId(agenda_id), vote);
+            });
+        }
+
+        return canVote;
     }
 
     private HttpStatus createAssociates(int quantity) {
         LOGGER.info("Accessing External API to create valid CPFs");
-        List<String> newsAssociates = Objects.requireNonNull(this.webClient.post()
-                .uri("/cpf/generatelist?qtd=" + quantity)
-                .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<List<String>>() {}).block());
-        return saveNewAssociates(newsAssociates);
+        return saveNewAssociates(webFluxUtils.generateCpfs(quantity));
     }
 
     private HttpStatus saveNewAssociates(List<String> associates) {
@@ -64,6 +84,14 @@ public class AssociateServiceImpl implements AssociateService {
             LOGGER.info("Save new Associate. ID Number -> {}", associateModel.getId());
         });
         return HttpStatus.CREATED;
+    }
+
+    private Optional<AssociateModel> getAssociate(String cpf) {
+        return Optional.ofNullable(associateRepository.findAssociateByCpf(cpf));
+    }
+
+    private Long getAgendaId(Long id) {
+        return agendaRepository.findById(id).orElseThrow().getId();
     }
 
 }
