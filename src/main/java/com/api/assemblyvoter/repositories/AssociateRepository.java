@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AssociateRepository extends JpaRepository<AssociateModel, Long> {
+
+    AssociateModel findAssociateByCpf(String cpf);
 }
