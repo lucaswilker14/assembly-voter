@@ -1,17 +1,25 @@
 package com.api.assemblyvoter.controllers;
 
+import com.api.assemblyvoter.services.AssociateService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController("AssociateController")
-@RequestMapping(value = "associete")
+@RequestMapping(value = "associate")
 public class AssociateController {
 
-    @PostMapping("/")
-    public ResponseEntity<Object> createNewAgenda() {
-        return ResponseEntity.status(HttpStatus.OK).body("NEW ASSOCIATE");
+    private AssociateService associateService;
+
+    @Autowired
+    public AssociateController(AssociateService associateService) {
+        this.associateService = associateService;
     }
+
+    @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createNewAssociates(@RequestParam int qtd) {
+        associateService.newAssociates(qtd);
+    }
+
 }

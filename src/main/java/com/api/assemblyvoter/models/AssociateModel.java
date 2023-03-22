@@ -18,9 +18,6 @@ public class AssociateModel {
     @Column(name = "cpf")
     private String cpf;
 
-    @Column(name = "vote")
-    private String vote;
-
     @ElementCollection
     @CollectionTable(name = "agendaVotesMapping", joinColumns = @JoinColumn(name = "associate_id"))
     @MapKeyColumn(name = "agenda_id")
