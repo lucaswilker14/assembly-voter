@@ -3,7 +3,7 @@ package com.api.assemblyvoter.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Set;
+import java.util.Map;
 
 @Entity
 @Table(name = "AssociateTable")
@@ -11,17 +11,20 @@ import java.util.Set;
 public class AssociateModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column
-    private boolean vote;
-
-    @Column
+    @Column(name = "cpf")
     private String cpf;
 
-    @ManyToMany(mappedBy = "associateVotes")
-    private Set<AgendaModel> agendaVotes;
+    @Column(name = "vote")
+    private String vote;
+
+    @ElementCollection
+    @CollectionTable(name = "agendaVotesMapping", joinColumns = @JoinColumn(name = "associate_id"))
+    @MapKeyColumn(name = "agenda_id")
+    @Column(name = "associate_vote")
+    private Map<Long, String> agendaVotes;
 
 }
