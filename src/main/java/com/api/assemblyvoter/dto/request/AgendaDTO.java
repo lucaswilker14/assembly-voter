@@ -1,4 +1,4 @@
-package com.api.assemblyvoter.dto;
+package com.api.assemblyvoter.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

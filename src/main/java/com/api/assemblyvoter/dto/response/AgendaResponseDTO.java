@@ -1,11 +1,11 @@
-package com.api.assemblyvoter.dto;
+package com.api.assemblyvoter.dto.response;
 
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
-public class responseAgendaResultDTO implements Serializable {
+public class AgendaResponseDTO implements Serializable {
 
     private String title;
     private int yesVotes;
