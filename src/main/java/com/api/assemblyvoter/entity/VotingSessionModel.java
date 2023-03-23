@@ -1,4 +1,4 @@
-package com.api.assemblyvoter.models;
+package com.api.assemblyvoter.entity;
 
 
 import jakarta.persistence.*;
@@ -15,7 +15,7 @@ public class VotingSessionModel {
     private Long id;
 
     @OneToOne
-    private AgendaModel agenda;
+    private AgendaEntity agenda;
 
     private int votes;
 

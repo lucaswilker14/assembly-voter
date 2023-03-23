@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class VotingSessionController {
 
     @PostMapping("/")
-    public ResponseEntity<Object> createNewAgenda() {
+    public ResponseEntity<Object> openAssemblyVoting() {
         return ResponseEntity.status(HttpStatus.OK).body("OPEN VOTING OF SESSION");
     }
 
