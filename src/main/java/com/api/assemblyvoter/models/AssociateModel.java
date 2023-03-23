@@ -3,6 +3,7 @@ package com.api.assemblyvoter.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Entity
@@ -18,13 +19,10 @@ public class AssociateModel {
     @Column(name = "cpf")
     private String cpf;
 
-    @Column(name = "vote")
-    private String vote;
-
     @ElementCollection
-    @CollectionTable(name = "agendaVotesMapping", joinColumns = @JoinColumn(name = "associate_id"))
+    @CollectionTable(name = "agenda_votes_mapping", joinColumns = @JoinColumn(name = "associate_id"))
     @MapKeyColumn(name = "agenda_id")
     @Column(name = "associate_vote")
-    private Map<Long, String> agendaVotes;
+    private Map<Long, String> agendaVotes = new HashMap<Long, String>();
 
 }
