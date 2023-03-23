@@ -1,8 +1,7 @@
 package com.api.assemblyvoter.services.core;
 
-import com.api.assemblyvoter.dto.VoteDTO;
+import com.api.assemblyvoter.dto.request.VoteDTO;
 import com.api.assemblyvoter.models.AssociateModel;
-import com.api.assemblyvoter.repositories.AgendaRepository;
 import com.api.assemblyvoter.repositories.AssociateRepository;
 import com.api.assemblyvoter.services.AssociateService;
 import com.api.assemblyvoter.utils.WebFluxUtils;
@@ -10,7 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,20 +25,27 @@ public class AssociateServiceImpl implements AssociateService {
 
     private final AssociateRepository associateRepository;
 
-    private final AgendaRepository agendaRepository;
+    private final AgendaServiceImpl agendaService;
 
     private final WebFluxUtils webFluxUtils;
 
     @Autowired
-    public AssociateServiceImpl(AssociateRepository associateRepository, AgendaRepository agendaRepository, WebFluxUtils webFluxUtils) {
+    public AssociateServiceImpl(AssociateRepository associateRepository, AgendaServiceImpl agendaService,
+                                WebFluxUtils webFluxUtils) {
         this.associateRepository = associateRepository;
-        this.agendaRepository = agendaRepository;
+        this.agendaService = agendaService;
         this.webFluxUtils = webFluxUtils;
-    };
+    }
 
     @Override
     public HttpStatus newAssociates(int quantity) {
         return createAssociates(quantity);
+    }
+
+    @Override
+    public Optional<AssociateModel> getAssociate(String cpf) {
+        return Optional.of(Optional.ofNullable(associateRepository.findAssociateByCpf(cpf))
+                .orElseThrow(() -> new HttpServerErrorException(HttpStatus.NOT_FOUND, "Empty List")));
     }
 
     @Override
@@ -55,20 +64,26 @@ public class AssociateServiceImpl implements AssociateService {
     }
 
     @Override
-    public Object vote(VoteDTO voteDTO) {
+    public ResponseEntity<String> vote(VoteDTO voteDTO) {
         String cpf = voteDTO.getAssociateCpf();
-        String vote = voteDTO.getVote();
-        Long agenda_id = Long.parseLong(voteDTO.getAgendaId());
+        Long agendaId = Long.parseLong(voteDTO.getAgendaId());
 
         boolean canVote = webFluxUtils.canVote(cpf) && getAssociate(cpf).isPresent();
+        boolean voted = getAssociate(cpf).orElseThrow().getAgendaVotes().containsKey(agendaId);
 
-        if (canVote) {
+        if (canVote && !voted) {
             getAssociate(cpf).ifPresent(ass -> {
-                ass.getAgendaVotes().put(getAgendaId(agenda_id), vote);
+                ass.getAgendaVotes().put(agendaService.getAgenda(agendaId)
+                        .orElseThrow(() -> new HttpServerErrorException(HttpStatus.NOT_FOUND, "Associate Not Found"))
+                        .getId(), StringUtils.capitalize(voteDTO.getVote()));
+                associateRepository.saveAndFlush(ass);
+                agendaService.updateAssociateVotes(agendaId, ass.getId(), voteDTO.getVote());
             });
+        } else {
+            throw new HttpServerErrorException(HttpStatus.NOT_ACCEPTABLE, "Associate has already voted for this Agenda");
         }
 
-        return canVote;
+        return ResponseEntity.ok("Registered Vote");
     }
 
     private HttpStatus createAssociates(int quantity) {
@@ -85,13 +100,4 @@ public class AssociateServiceImpl implements AssociateService {
         });
         return HttpStatus.CREATED;
     }
-
-    private Optional<AssociateModel> getAssociate(String cpf) {
-        return Optional.ofNullable(associateRepository.findAssociateByCpf(cpf));
-    }
-
-    private Long getAgendaId(Long id) {
-        return agendaRepository.findById(id).orElseThrow().getId();
-    }
-
 }
