@@ -1,4 +1,4 @@
-package com.api.assemblyvoter.models;
+package com.api.assemblyvoter.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

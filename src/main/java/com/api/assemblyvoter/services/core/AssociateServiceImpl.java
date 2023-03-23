@@ -1,7 +1,7 @@
 package com.api.assemblyvoter.services.core;
 
 import com.api.assemblyvoter.dto.request.VoteDTO;
-import com.api.assemblyvoter.models.AssociateModel;
+import com.api.assemblyvoter.entity.AssociateModel;
 import com.api.assemblyvoter.repositories.AssociateRepository;
 import com.api.assemblyvoter.services.AssociateService;
 import com.api.assemblyvoter.utils.WebClientUtils;
@@ -10,12 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class AssociateServiceImpl implements AssociateService {
@@ -44,7 +46,7 @@ public class AssociateServiceImpl implements AssociateService {
     @Override
     public Optional<AssociateModel> getAssociate(String cpf) {
         return Optional.of(Optional.ofNullable(associateRepository.findAssociateByCpf(cpf))
-                .orElseThrow(() -> new HttpServerErrorException(HttpStatus.NOT_FOUND, "Empty List")));
+                .orElseThrow(() -> new HttpServerErrorException(HttpStatus.NOT_FOUND, "No Associate Registered.")));
     }
 
     @Override
@@ -58,19 +60,17 @@ public class AssociateServiceImpl implements AssociateService {
     }
 
     @Override
-    public HashMap<String, String> statusVote(String cpf) {
+    public HashMap<String, String> statusAssociateVote(String cpf) {
         return webClientUtils.ableToVote(cpf);
     }
 
     @Override
-    public ResponseEntity<String> vote(VoteDTO voteDTO) {
+    public ResponseEntity<Object> registerVote(VoteDTO voteDTO) {
+
         String cpf = voteDTO.getAssociateCpf();
         Long agendaId = Long.parseLong(voteDTO.getAgendaId());
 
-        boolean canVote = webClientUtils.canVote(cpf) && getAssociate(cpf).isPresent();
-        boolean voted = getAssociate(cpf).orElseThrow().getAgendaVotes().containsKey(agendaId);
-
-        if (canVote && !voted) {
+        if (openSessionVoting() && isCanVote(cpf, agendaId)) {
             getAssociate(cpf).ifPresent(ass -> {
                 ass.getAgendaVotes().put(agendaService.getAgenda(agendaId)
                         .orElseThrow(() -> new HttpServerErrorException(HttpStatus.NOT_FOUND, "Associate Not Found"))
@@ -78,13 +78,18 @@ public class AssociateServiceImpl implements AssociateService {
                 associateRepository.saveAndFlush(ass);
                 agendaService.updateAssociateVotes(agendaId, ass.getId(), voteDTO.getVote().toUpperCase());
             });
-        } else if (!canVote) {
-            throw new HttpServerErrorException(HttpStatus.OK, "Associate is UNABLE_TO_VOTE. Check your permissions");
-        } else {
-            throw new HttpServerErrorException(HttpStatus.OK, "Associate has already voted for this Agenda");
         }
-
         return ResponseEntity.ok("Registered Vote");
+    }
+
+    private boolean isCanVote(String cpf, Long agendaId) {
+        boolean canVote = webClientUtils.canVote(cpf) && getAssociate(cpf).isPresent();
+        boolean voted = getAssociate(cpf).orElseThrow().getAgendaVotes().containsKey(agendaId);
+        return canVote && !voted;
+    }
+
+    private boolean openSessionVoting() {
+        return true;
     }
 
     private HttpStatus createAssociates(int quantity) {

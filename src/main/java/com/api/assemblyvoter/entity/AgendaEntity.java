@@ -1,18 +1,16 @@
-package com.api.assemblyvoter.models;
+package com.api.assemblyvoter.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
-import javax.print.attribute.standard.MediaSize;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 @Entity
 @Table(name = "AgendaTable")
 @Data
-public class AgendaModel implements Serializable {
+public class AgendaEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +22,6 @@ public class AgendaModel implements Serializable {
 
     @Column(name = "description")
     private String description;
-
 
     @ElementCollection
     @CollectionTable(name = "associateVotesMapping", joinColumns = @JoinColumn(name = "agenda_id"))

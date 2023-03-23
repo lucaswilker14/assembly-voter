@@ -1,13 +1,12 @@
 package com.api.assemblyvoter.services;
 
 import com.api.assemblyvoter.dto.request.VoteDTO;
-import com.api.assemblyvoter.models.AssociateModel;
+import com.api.assemblyvoter.entity.AssociateModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public interface AssociateService {
@@ -20,8 +19,8 @@ public interface AssociateService {
 
     void deleteAll();
 
-    HashMap<String, String> statusVote(String cpf);
+    HashMap<String, String> statusAssociateVote(String cpf);
 
-    ResponseEntity<String> vote(VoteDTO voteDTO);
+    ResponseEntity<Object> registerVote(VoteDTO voteDTO);
 
 }
