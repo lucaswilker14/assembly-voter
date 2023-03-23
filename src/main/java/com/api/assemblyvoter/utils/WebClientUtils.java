@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class WebFluxUtils {
+public class WebClientUtils {
 
     private final WebClient webClient;
 
     @Autowired
-    public WebFluxUtils(WebClient webClient) {
+    public WebClientUtils(WebClient webClient) {
         this.webClient = webClient;
     }
 
