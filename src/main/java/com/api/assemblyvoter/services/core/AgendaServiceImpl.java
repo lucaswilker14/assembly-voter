@@ -2,7 +2,7 @@ package com.api.assemblyvoter.services.core;
 
 import com.api.assemblyvoter.dto.request.AgendaDTO;
 import com.api.assemblyvoter.dto.response.AgendaResponseDTO;
-import com.api.assemblyvoter.models.AgendaModel;
+import com.api.assemblyvoter.entity.AgendaEntity;
 import com.api.assemblyvoter.repositories.AgendaRepository;
 import com.api.assemblyvoter.services.AgendaService;
 import org.slf4j.Logger;
@@ -33,22 +33,22 @@ public class AgendaServiceImpl implements AgendaService {
     }
 
     @Override
-    public AgendaModel createNewAgenda(AgendaDTO agendaDTO) {
+    public AgendaEntity createNewAgenda(AgendaDTO agendaDTO) {
         LOGGER.info("Starting the creation of the new Agenda");
-        AgendaModel newAgenda = new AgendaModel();
+        AgendaEntity newAgenda = new AgendaEntity();
         BeanUtils.copyProperties(agendaDTO, newAgenda);
         newAgenda.setAssociateVotes(Collections.emptyMap());
         return agendaRepository.saveAndFlush(newAgenda);
     }
 
     @Override
-    public Optional<AgendaModel> getAgenda(Long id) {
+    public Optional<AgendaEntity> getAgenda(Long id) {
         return Optional.ofNullable(agendaRepository.findById(id)
                 .orElseThrow(() -> new HttpServerErrorException(HttpStatus.NOT_FOUND, "Agenda Not Found")));
     }
 
     @Override
-    public List<AgendaModel> getAgendas() {
+    public List<AgendaEntity> getAgendas() {
         return agendaRepository.findAll();
     }
 
