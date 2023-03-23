@@ -11,12 +11,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class AgendaServiceImpl implements AgendaService {
@@ -53,20 +54,31 @@ public class AgendaServiceImpl implements AgendaService {
 
     @Override
     public AgendaResponseDTO votingResult(Long id) {
-        agendaRepository.findById(id).ifPresent(agendaModel -> {
-            AgendaResponseDTO resultDTO = new AgendaResponseDTO();
-            resultDTO.setTitle(agendaModel.getTitle());
-            Long a = agendaModel.getAssociateVotes().entrySet().stream().filter(map -> map.getValue().equals("SIM")).count();
-            LOGGER.info("TESTE");
+        AgendaResponseDTO resultDTO = new AgendaResponseDTO();
+
+        agendaRepository.findById(id).ifPresent(agenda -> {
+            var stream = agenda.getAssociateVotes().entrySet().stream();
+            int yesVotes  = getResultVoting(stream, "yes");
+            int noVotes = getResultVoting(stream, "no");
+            int totalVotes = agenda.getAssociateVotes().size();
+
+            resultDTO.setTitle(agenda.getTitle());
+            resultDTO.setYesVotes(yesVotes);
+            resultDTO.setNoVotes(noVotes);
+            resultDTO.setTotalVotes(totalVotes);
         });
-        return null;
+        return resultDTO;
     }
 
     public void updateAssociateVotes(Long agendaId, Long associateId, String vote) {
         getAgenda(agendaId).ifPresent(agenda -> {
-            agenda.getAssociateVotes().put(associateId, StringUtils.capitalize(vote));
+            agenda.getAssociateVotes().put(associateId, vote);
             agendaRepository.saveAndFlush(agenda);
         });
+    }
+
+    private static int getResultVoting(Stream<Map.Entry<Long, String>> stream, String vote) {
+        return stream.filter(yesResult -> yesResult.getValue().equalsIgnoreCase(vote)).toList().size();
     }
 
 }
