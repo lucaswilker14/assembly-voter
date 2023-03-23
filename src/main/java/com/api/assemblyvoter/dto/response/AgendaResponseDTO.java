@@ -8,8 +8,11 @@ import java.io.Serializable;
 public class AgendaResponseDTO implements Serializable {
 
     private String title;
+
     private int yesVotes;
+
     private int noVotes;
+
     private int totalVotes;
 
 }
