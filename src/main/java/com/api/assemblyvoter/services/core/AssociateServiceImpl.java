@@ -89,11 +89,11 @@ public class AssociateServiceImpl implements AssociateService {
 
     private void validateAssociate(boolean openedSession, String cpf, Long agendaId) {
         if (!openedSession) {
-            throw new HttpServerErrorException(HttpStatus.NOT_FOUND, "Voting Session isn`t open.");
+            throw new HttpServerErrorException(HttpStatus.BAD_REQUEST, "Voting Session isn`t open!");
         }
 
         if (!isCanVote(cpf, agendaId)) {
-            throw new HttpServerErrorException(HttpStatus.OK, "Associate can not vote");
+            throw new HttpServerErrorException(HttpStatus.BAD_REQUEST, "Associate can not vote");
         }
     }
 
