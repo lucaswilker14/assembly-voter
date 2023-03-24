@@ -3,12 +3,14 @@ package com.api.assemblyvoter.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 @Entity
 @Table(name = "VotingSessionTable")
 @Data
-public class VotingSessionModel {
+public class VotingSessionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,7 +19,11 @@ public class VotingSessionModel {
     @OneToOne
     private AgendaEntity agenda;
 
-    private int votes;
+    private boolean isOpen = false;
+
+    private int votationResult;
+
+    private int sessionDuration;
 
 }
 

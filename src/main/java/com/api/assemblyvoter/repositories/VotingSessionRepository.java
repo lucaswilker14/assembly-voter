@@ -1,7 +1,7 @@
 package com.api.assemblyvoter.repositories;
 
-import com.api.assemblyvoter.entity.VotingSessionModel;
+import com.api.assemblyvoter.entity.VotingSessionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface VotingSessionRepository extends JpaRepository<VotingSessionModel, Long> {
+public interface VotingSessionRepository extends JpaRepository<VotingSessionEntity, Long> {
 }
