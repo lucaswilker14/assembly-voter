@@ -1,7 +1,7 @@
 package com.api.assemblyvoter.services;
 
 import com.api.assemblyvoter.dto.request.VoteDTO;
-import com.api.assemblyvoter.entity.AssociateModel;
+import com.api.assemblyvoter.entity.AssociateEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -13,9 +13,9 @@ public interface AssociateService {
 
     HttpStatus newAssociates(int quantity);
 
-    Optional<AssociateModel> getAssociate(String cpf);
+    Optional<AssociateEntity> getAssociate(String cpf);
 
-    List<AssociateModel> getAssociates();
+    List<AssociateEntity> getAssociates();
 
     void deleteAll();
 

@@ -1,7 +1,7 @@
 package com.api.assemblyvoter.services;
 
 import com.api.assemblyvoter.dto.request.AgendaDTO;
-import com.api.assemblyvoter.dto.response.AgendaResponseDTO;
+import com.api.assemblyvoter.dto.response.ResultVotingSessionResponseDTO;
 import com.api.assemblyvoter.entity.AgendaEntity;
 
 import java.util.List;
@@ -15,6 +15,6 @@ public interface AgendaService {
 
     List<AgendaEntity> getAgendas();
 
-    AgendaResponseDTO votingResult(Long id);
+    ResultVotingSessionResponseDTO votingResult(Long id);
 
 }

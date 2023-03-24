@@ -18,11 +18,14 @@ public class VoteDTO implements Serializable {
 
     @NotBlank
     @Size(min = 2, max = 3,  message = "Vote must ne 'YES' or 'NO'")
-    @Pattern(regexp = "^(YES|NO)$", message = "Vote must ne 'YES' or 'NO'")
+    @Pattern(regexp = "^(YES|yes|no|NO)$", message = "Vote must ne 'YES' or 'NO'")
     private String vote;
 
     @NotBlank
     private String agendaId;
+
+    @NotBlank
+    private String sessionId;
 
 
 }
