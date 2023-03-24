@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -97,9 +98,13 @@ public class AssociateServiceImpl implements AssociateService {
     }
 
     private boolean isCanVote(String cpf, Long agendaId) {
-        boolean canVote = webClientUtils.canVote(cpf) && getAssociate(cpf).isPresent();
-        boolean voted = getAssociate(cpf).orElseThrow().getAgendaVotes().containsKey(agendaId);
-        return canVote && !voted;
+        try {
+            boolean canVote = webClientUtils.canVote(cpf) && getAssociate(cpf).isPresent();
+            boolean voted = getAssociate(cpf).orElseThrow().getAgendaVotes().containsKey(agendaId);
+            return canVote && !voted;
+        }catch (WebClientResponseException e) {
+            throw new HttpServerErrorException(HttpStatus.OK, "Associate can not vote");
+        }
     }
 
     private HttpStatus createAssociates(int quantity) {
