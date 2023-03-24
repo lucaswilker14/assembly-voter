@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class AgendaResponseDTO implements Serializable {
+public class ResultVotingSessionResponseDTO implements Serializable {
 
     private String title;
 

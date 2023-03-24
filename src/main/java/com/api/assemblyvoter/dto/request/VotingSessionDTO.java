@@ -10,6 +10,6 @@ public class VotingSessionDTO {
     @NotBlank
     private String agendaId;
 
-    private int sessionDuration;
+    private int sessionDurationSec;
 
 }

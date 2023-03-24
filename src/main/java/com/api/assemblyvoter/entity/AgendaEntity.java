@@ -29,4 +29,6 @@ public class AgendaEntity implements Serializable {
     @Column(name = "associate_vote")
     private Map<Long, String> associateVotes = new HashMap<Long, String>();
 
+    private boolean voted;
+
 }

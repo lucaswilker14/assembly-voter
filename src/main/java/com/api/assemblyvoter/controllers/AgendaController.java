@@ -1,12 +1,14 @@
 package com.api.assemblyvoter.controllers;
 
 import com.api.assemblyvoter.dto.request.AgendaDTO;
+import com.api.assemblyvoter.dto.response.ResponseHandler;
 import com.api.assemblyvoter.services.AgendaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpServerErrorException;
 
 @RestController("AgendaController")
 @RequestMapping(value = "agenda")
@@ -31,6 +33,10 @@ public class AgendaController {
 
     @GetMapping("/{id}/result")
     public ResponseEntity<Object> votingResult(@PathVariable("id") Long id) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(agendaService.votingResult(id));
+        try {
+            return ResponseHandler.generateResponse(agendaService.votingResult(id), HttpStatus.OK);
+        }catch (HttpServerErrorException e) {
+            return ResponseHandler.generateResponse(e.getStatusText(), HttpStatus.NOT_FOUND);
+        }
     }
 }

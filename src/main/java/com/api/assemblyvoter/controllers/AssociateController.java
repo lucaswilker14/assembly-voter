@@ -69,7 +69,7 @@ public class AssociateController {
         try {
             return ResponseHandler.generateResponse(associateService.statusAssociateVote(cpf), HttpStatus.OK);
         } catch (WebClientResponseException e) {
-            return ResponseHandler.generateResponse(e.getResponseBodyAsString(), HttpStatus.resolve(e.getStatusCode().value()));
+            return ResponseHandler.generateResponse(String.format("%s %s", cpf, e.getStatusText()), HttpStatus.resolve(e.getStatusCode().value()));
         }
     }
 

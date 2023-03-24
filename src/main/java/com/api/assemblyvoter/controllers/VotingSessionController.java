@@ -8,27 +8,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
 
 @RestController("VotingSessionController")
 @RequestMapping(value = "voting-session")
 public class VotingSessionController {
 
-    private VotingSessionService votingSessionService;
+    private final VotingSessionService votingSessionService;
 
     @Autowired
     public VotingSessionController(VotingSessionService votingSessionService) {
         this.votingSessionService = votingSessionService;
     }
 
-    @PostMapping("/open")
-    public ResponseEntity<Object> openAssemblyVoting(@RequestBody @Valid VotingSessionDTO sessionDTO) {
+    @PostMapping()
+    public ResponseEntity<Object> createVotingSession(@RequestBody @Valid VotingSessionDTO sessionDTO) {
         try {
-            return votingSessionService.openSession(sessionDTO);
+            return votingSessionService.createVotingSession(sessionDTO);
+        }catch (HttpServerErrorException e) {
+            return ResponseHandler.generateResponse(e.getStatusText(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/open/{id}")
+    public ResponseEntity<Object> openAssemblyVoting(@RequestBody @Valid VotingSessionDTO sessionDTO,
+                                                     @PathVariable("id") String sessionId) {
+        try {
+            return votingSessionService.openSession(sessionDTO, Long.parseLong(sessionId));
         }catch (HttpServerErrorException e) {
             return ResponseHandler.generateResponse(e.getStatusText(), HttpStatus.NOT_FOUND);
         }

@@ -1,7 +1,7 @@
 package com.api.assemblyvoter.services.core;
 
 import com.api.assemblyvoter.dto.request.AgendaDTO;
-import com.api.assemblyvoter.dto.response.AgendaResponseDTO;
+import com.api.assemblyvoter.dto.response.ResultVotingSessionResponseDTO;
 import com.api.assemblyvoter.entity.AgendaEntity;
 import com.api.assemblyvoter.repositories.AgendaRepository;
 import com.api.assemblyvoter.services.AgendaService;
@@ -53,14 +53,14 @@ public class AgendaServiceImpl implements AgendaService {
     }
 
     @Override
-    public AgendaResponseDTO votingResult(Long id) {
-        AgendaResponseDTO resultDTO = new AgendaResponseDTO();
+    public ResultVotingSessionResponseDTO votingResult(Long id) {
+        ResultVotingSessionResponseDTO resultDTO = new ResultVotingSessionResponseDTO();
 
-        agendaRepository.findById(id).ifPresent(agenda -> {
+        getAgenda(id).ifPresent(agenda -> {
             var stream = agenda.getAssociateVotes().entrySet().stream();
-            int yesVotes  = getResultVoting(stream, "yes");
-            int noVotes = getResultVoting(stream, "no");
             int totalVotes = agenda.getAssociateVotes().size();
+            int yesVotes  = getResultVoting(stream);
+            int noVotes = totalVotes - yesVotes;
 
             resultDTO.setTitle(agenda.getTitle());
             resultDTO.setYesVotes(yesVotes);
@@ -70,15 +70,23 @@ public class AgendaServiceImpl implements AgendaService {
         return resultDTO;
     }
 
-    public void updateAssociateVotes(Long agendaId, Long associateId, String vote) {
+    public void updateAssociatesVotes(Long agendaId, Long associateId, String vote) {
         getAgenda(agendaId).ifPresent(agenda -> {
             agenda.getAssociateVotes().put(associateId, vote);
             agendaRepository.saveAndFlush(agenda);
         });
     }
 
-    private static int getResultVoting(Stream<Map.Entry<Long, String>> stream, String vote) {
-        return stream.filter(yesResult -> yesResult.getValue().equalsIgnoreCase(vote)).toList().size();
+    public void updateVotedAgenda(AgendaEntity agenda, boolean voted) {
+        LOGGER.info("UPDATE AGENDA -> VOTED");
+        agenda.setVoted(voted);
+        agendaRepository.saveAndFlush(agenda);
+    }
+
+    private static int getResultVoting(Stream<Map.Entry<Long, String>> stream) {
+        return stream.filter(yesResult -> yesResult.getValue().equalsIgnoreCase("YES"))
+                .toList()
+                .size();
     }
 
 }

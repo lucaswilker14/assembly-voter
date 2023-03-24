@@ -1,10 +1,9 @@
 package com.api.assemblyvoter.entity;
 
 
+import com.api.assemblyvoter.dto.response.ResultVotingSessionResponseDTO;
 import jakarta.persistence.*;
 import lombok.Data;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 @Entity
@@ -21,9 +20,9 @@ public class VotingSessionEntity {
 
     private boolean isOpen = false;
 
-    private int votationResult;
+    private ResultVotingSessionResponseDTO votationResult;
 
-    private int sessionDuration;
+    private int sessionDurationSec;
 
 }
 

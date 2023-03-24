@@ -9,7 +9,7 @@ import java.util.Map;
 @Entity
 @Table(name = "AssociateTable")
 @Data
-public class AssociateModel {
+public class AssociateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
