@@ -6,9 +6,9 @@ import com.api.assemblyvoter.dto.response.ResponseHandler;
 import com.api.assemblyvoter.dto.response.ResultVotingSessionResponseDTO;
 import com.api.assemblyvoter.entity.AgendaEntity;
 import com.api.assemblyvoter.entity.VotingSessionEntity;
+import com.api.assemblyvoter.rabbitmq.Producer;
 import com.api.assemblyvoter.repositories.VotingSessionRepository;
 import com.api.assemblyvoter.services.VotingSessionService;
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,12 +32,15 @@ public class VotingSessionImpl implements VotingSessionService {
 
     private final AgendaServiceImpl agendaService;
 
+    private Producer producer;
+
     @Value("${thread.default.session}")
     private int sessionDurationDefaultSec;
 
-    public VotingSessionImpl(VotingSessionRepository votingSessionRepository, AgendaServiceImpl agendaService) {
+    public VotingSessionImpl(VotingSessionRepository votingSessionRepository, AgendaServiceImpl agendaService, Producer producer) {
         this.votingSessionRepository = votingSessionRepository;
         this.agendaService = agendaService;
+        this.producer = producer;
     }
 
     @Override
@@ -67,10 +70,14 @@ public class VotingSessionImpl implements VotingSessionService {
         votingSessionRepository.saveAndFlush(sessionEntity);
 
         try {
-            openVotingSession(agenda, sessionEntity, sessionEntity.getSessionDurationSec());
+            openThreadVotingSession(agenda, sessionEntity, sessionEntity.getSessionDurationSec());
+
             ResultVotingSessionResponseDTO responseDTO = agendaService.votingResult(Long.parseLong(sessionDTO.getAgendaId()));
+
+            LOGGER.info("INFORMING THE PLATFORM THE RESULT OF THE VOTING SESSION");
+            producer.send(responseDTO, sessionEntity);
+
             LOGGER.info("RESPONSE VOTING RESULT");
-            sessionEntity.setVotationResult(responseDTO);
             return ResponseHandler.generateResponse(responseDTO, HttpStatus.OK);
         }catch (ExecutionException | InterruptedException | TimeoutException e) {
             return ResponseHandler.generateResponse("TIMEOUT ERROR", HttpStatus.REQUEST_TIMEOUT);
@@ -90,7 +97,7 @@ public class VotingSessionImpl implements VotingSessionService {
                 .orElseThrow(() -> new HttpServerErrorException(HttpStatus.NOT_FOUND, "Voting Session Not Found."));
     }
 
-    private void openVotingSession(AgendaEntity agendaVoted, VotingSessionEntity session, int time)
+    private void openThreadVotingSession(AgendaEntity agendaVoted, VotingSessionEntity session, int time)
             throws ExecutionException, InterruptedException, TimeoutException {
 
         long timer = time * 1000L; //milliseconds

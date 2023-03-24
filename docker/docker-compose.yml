@@ -11,3 +11,23 @@ services:
     environment:
       POSTGRES_DB: assembly-voter-db
       POSTGRES_PASSWORD: 123
+
+  rabbitmq:
+    container_name: rabbit-mq
+    image: rabbitmq:3.10.7-management-alpine
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./data-rabbitmq:/var/lib/rabbitmq/
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    restart: always
+    networks:
+      - lwnet
+
+networks:
+  lwnet:
+    driver: bridge
