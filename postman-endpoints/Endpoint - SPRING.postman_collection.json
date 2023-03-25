@@ -1,0 +1,262 @@
+{
+	"info": {
+		"_postman_id": "f6d434e7-9748-41c2-a7a7-624cb4bcb3d6",
+		"name": "Endpoint - SPRING",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4837786"
+	},
+	"item": [
+		{
+			"name": "PAUTA",
+			"item": [
+				{
+					"name": "CADASTRAR PAUTA",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"PAUTA {{numero}}\",\r\n    \"description\": \"Descrição da Pauta {{numero}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{springBaseURL}}/agenda",
+							"host": [
+								"{{springBaseURL}}"
+							],
+							"path": [
+								"agenda"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TODAS PAUTAS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{springBaseURL}}/agenda",
+							"host": [
+								"{{springBaseURL}}"
+							],
+							"path": [
+								"agenda"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RESULTADO VOTAÇÃO",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{springBaseURL}}/agenda/1/result",
+							"host": [
+								"{{springBaseURL}}"
+							],
+							"path": [
+								"agenda",
+								"1",
+								"result"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ASSOCIADO",
+			"item": [
+				{
+					"name": "CRIAR ASSOCIADOS",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{springBaseURL}}/associate?qtd=20",
+							"host": [
+								"{{springBaseURL}}"
+							],
+							"path": [
+								"associate"
+							],
+							"query": [
+								{
+									"key": "qtd",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ASSOCIADO",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{springBaseURL}}/associate/56606581",
+							"host": [
+								"{{springBaseURL}}"
+							],
+							"path": [
+								"associate",
+								"56606581"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RETORNA TODOS ASSOCIADOS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{springBaseURL}}/associate",
+							"host": [
+								"{{springBaseURL}}"
+							],
+							"path": [
+								"associate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "STATUS CPF VOTO",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{springBaseURL}}/associate/status/99954351019",
+							"host": [
+								"{{springBaseURL}}"
+							],
+							"path": [
+								"associate",
+								"status",
+								"99954351019"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VOTAR NA PAUTA POR ID",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"associateCpf\":\"9514\",\r\n    \"vote\": \"yes\",\r\n    \"agendaId\":\"1\",\r\n    \"sessionId\": \"252\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{springBaseURL}}/associate/vote",
+							"host": [
+								"{{springBaseURL}}"
+							],
+							"path": [
+								"associate",
+								"vote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETA TODOS ASSOCIADOS",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{springBaseURL}}/associate",
+							"host": [
+								"{{springBaseURL}}"
+							],
+							"path": [
+								"associate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SESSÃO DE VOT.",
+			"item": [
+				{
+					"name": "ABRIR SESSÃO",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"agendaId\": \"2\",\r\n    \"sessionDurationSec\": 120\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{springBaseURL}}/voting-session/open/1",
+							"host": [
+								"{{springBaseURL}}"
+							],
+							"path": [
+								"voting-session",
+								"open",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CRIAR SESSÃO",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"agendaId\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{springBaseURL}}/voting-session",
+							"host": [
+								"{{springBaseURL}}"
+							],
+							"path": [
+								"voting-session"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
