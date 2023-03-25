@@ -1,0 +1,90 @@
+{
+	"info": {
+		"_postman_id": "fbdcc845-bbcc-4572-8ef5-bf6e7039cc19",
+		"name": "Endpoints- PYTHON",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4837786"
+	},
+	"item": [
+		{
+			"name": "VALIDAR CPF",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/cpf/validator/86671514593",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"cpf",
+						"validator",
+						"86671514593"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CPF INVÁLIDO",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/cpf/validator/111111",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"cpf",
+						"validator",
+						"111111"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GERAR CPF",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/cpf/generate",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"cpf",
+						"generate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GERAR LISTA CPFS",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/cpf/generatelist?qtd=1",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"cpf",
+						"generatelist"
+					],
+					"query": [
+						{
+							"key": "qtd",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

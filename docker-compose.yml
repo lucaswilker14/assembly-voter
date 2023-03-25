@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+  rabbitmq:
+    container_name: rabbitmq
+    hostname: rabbitmq
+    image: rabbitmq:3.11-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./docker/data-rabbitmq:/var/lib/rabbitmq/
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 30s
+      retries: 3
+    restart: always
+    networks:
+      - localnet
+
+  db-postgres:
+    container_name: db-postgres
+    restart: always
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: assembly-voter-db
+      POSTGRES_PASSWORD: 123
+    networks:
+      - localnet
+
+  assembly-voter:
+    container_name: assembly-voter
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=admin
+      - SPRING_RABBITMQ_PASSWORD=admin
+    networks:
+      - localnet
+    restart: on-failure
+
+networks:
+  localnet:
+    driver: bridge
