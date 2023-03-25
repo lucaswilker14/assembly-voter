@@ -18,6 +18,7 @@ identificado por um id único e pode votar apenas uma vez por pauta);
 -O resultado da votação precisa ser informado para o restante da plataforma, isso deve ser
   feito preferencialmente através de mensageria. Quando a sessão de votação fechar, poste
   uma mensagem com o resultado da votação.
+---
 
 ### Explicando Arquitetura Construída:
 
@@ -41,7 +42,7 @@ identificado por um id único e pode votar apenas uma vez por pauta);
   - salvar o resultado da votação.
 - Nesse ponto, o *Redis* entra em ação e faz com que esse dado retornado do microserviço seja armazenado em cache.
 
-
+---
 ### Organização do código:
 - A arquitetura foi baseada em microserviços, onde faço o uso de containers docker e Elastic Beanstalk para gerir minhas aplicações;
 - O projeto possui *Produtor* e *Consumidor*;
@@ -102,5 +103,5 @@ $ http://localhost:8080/api/v1/assembly-voter/swagger-ui/index.html
 
 ---
 
-### Json de Requisições do Postman
-- [Postman](https://docs.docker.com/get-docker/)
+### Requisições Postman
+- [Endpoints - Postman](https://github.com/lucaswilker14/assembly-voter/tree/develop/postman-endpoints)
