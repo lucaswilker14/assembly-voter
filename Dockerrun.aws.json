@@ -2,7 +2,7 @@
   "AWSEBDockerrunVersion": 2,
   "containerDefinitions": [
     {
-      "name": "  db-postgres",
+      "name": "db-postgres",
       "image": "postgres:alpine",
       "portMappings": [{
         "containerPort": 5432,
