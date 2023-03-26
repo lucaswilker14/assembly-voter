@@ -49,8 +49,8 @@
         }
       ],
       "mountPoints": [{
-        "containerPath": "/var/lib/rabbitmq/",
-        "sourceVolume": "rabbitmq"
+        "containerPath": "/var/lib/rabbitmq/data",
+        "sourceVolume": "rabbitmq-data"
       }],
       "essential": true,
       "memory": 128
