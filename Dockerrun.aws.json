@@ -70,9 +70,18 @@
       "memory": 300
     }
   ],
-  "networks": {
-    "localnet": {
-      "driver": "bridge"
+  "volumes": [
+    {
+      "host": {
+        "sourcePath": "postgres_data"
+      },
+      "name": "postgres_data"
+    },
+    {
+      "host": {
+        "sourcePath": "rabbitmq"
+      },
+      "name": "rabbitmq"
     }
-  }
+  ]
 }
