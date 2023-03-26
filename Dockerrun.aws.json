@@ -19,7 +19,7 @@
         }
       ],
       "essential": true,
-      "memory": 300,
+      "memory": 128,
       "mountPoints": [{
         "containerPath": "/var/lib/postgresql/data/",
         "sourceVolume": "postgres_data"
@@ -53,7 +53,7 @@
         "sourceVolume": "rabbitmq"
       }],
       "essential": true,
-      "memory": 300
+      "memory": 128
     },
     {
       "name": "assembly-voter",
@@ -67,7 +67,7 @@
         "rabbitmq"
       ],
       "essential": true,
-      "memory": 300
+      "memory": 128
     }
   ],
   "volumes": [
@@ -78,9 +78,9 @@
       }
     },
     {
-      "name": "rabbitmq",
+      "name": "rabbitmq-data",
       "host": {
-        "sourcePath": "var/app/rabbitmq"
+        "sourcePath": "var/app/rabbitmq-data"
       }
     }
   ]

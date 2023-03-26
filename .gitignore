@@ -37,7 +37,7 @@ out/
 .vscode/
 
 rabbit/data-rabbitmq/*
-
+docker/data-rabbitmq/*
 
 
 
