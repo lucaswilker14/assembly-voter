@@ -74,6 +74,5 @@
     "localnet": {
       "driver": "bridge"
     }
-  },
-
+  }
 }
