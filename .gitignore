@@ -40,3 +40,8 @@ rabbit/data-rabbitmq/*
 
 
 
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
