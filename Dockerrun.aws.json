@@ -74,13 +74,13 @@
     {
       "name": "postgres_data",
       "host": {
-        "sourcePath": "/var/app/postgres_data"
+        "sourcePath": "/var/app/current/postgres_data"
       }
     },
     {
       "name": "rabbitmq-data",
       "host": {
-        "sourcePath": "var/app/rabbitmq-data"
+        "sourcePath": "var/app/current/rabbitmq-data"
       }
     }
   ]
