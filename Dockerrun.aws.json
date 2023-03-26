@@ -60,7 +60,7 @@
       "image": "lucaswilker14/assembly-voter:v1",
       "portMappings": [{
         "containerPort": 8080,
-        "hostPort": 8080
+        "hostPort": 80
       }],
       "links": [
         "db-postgres",
