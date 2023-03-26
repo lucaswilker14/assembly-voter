@@ -1,5 +1,5 @@
 {
-  "AWSEBDockerrunVersion": 2,
+  "AWSEBDockerrunVersion": 3,
   "containerDefinitions": [
     {
       "name": "  db-postgres",
@@ -72,16 +72,16 @@
   ],
   "volumes": [
     {
+      "name": "postgres_data",
       "host": {
-        "sourcePath": "postgres_data"
-      },
-      "name": "postgres_data"
+        "sourcePath": "/var/app/postgres_data"
+      }
     },
     {
+      "name": "rabbitmq",
       "host": {
-        "sourcePath": "rabbitmq"
-      },
-      "name": "rabbitmq"
+        "sourcePath": "var/app/rabbitmq"
+      }
     }
   ]
 }
