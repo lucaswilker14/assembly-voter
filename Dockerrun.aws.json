@@ -63,7 +63,7 @@
         "hostPort": 8080
       }],
       "links": [
-        "dq-postgres",
+        "db-postgres",
         "rabbitmq"
       ],
       "essential": true,
