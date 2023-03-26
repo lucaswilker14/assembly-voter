@@ -1,0 +1,87 @@
+{
+  "AWSEBDockerrunVersion": 3,
+  "containerDefinitions": [
+    {
+      "name": "  db-postgres",
+      "image": "postgres:alpine",
+      "portMappings": [{
+        "containerPort": 5432,
+        "hostPort": 5432
+      }],
+      "environment": [
+        {
+          "name": "POSTGRES_DB",
+          "value": "assembly-voter-db"
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "value": "123"
+        }
+      ],
+      "essential": true,
+      "memory": 128,
+      "mountPoints": [{
+        "containerPath": "/var/lib/postgresql/data/",
+        "sourceVolume": "postgres_data"
+      }]
+    },
+    {
+      "name": "rabbitmq",
+      "image": "rabbitmq:3.11-management-alpine",
+      "portMappings": [
+        {
+          "containerPort": 5672,
+          "hostPort": 5672
+        },
+        {
+          "containerPort": 15672,
+          "hostPort": 15672
+        }
+      ],
+      "environment": [
+        {
+          "name": "RABBITMQ_DEFAULT_USER",
+          "value": "admin"
+        },
+        {
+          "name": "RABBITMQ_DEFAULT_PASS",
+          "value": "admin"
+        }
+      ],
+      "mountPoints": [{
+        "containerPath": "/var/lib/rabbitmq/",
+        "sourceVolume": "rabbitmq"
+      }],
+      "essential": true,
+      "memory": 128
+    },
+    {
+      "name": "assembly-voter",
+      "image": "lucaswilker14/assembly-voter:v1",
+      "portMappings": [{
+        "containerPort": 8080,
+        "hostPort": 8080
+      }],
+      "links": [
+        "dq-postgres",
+        "rabbitmq"
+      ],
+      "essential": true,
+      "memory": 128
+    }
+  ],
+  "volumes": [
+    {
+      "name": "postgres_data",
+      "host": {
+        "sourcePath": "/var/app/postgres_data"
+      }
+    },
+    {
+      "name": "rabbitmq-data",
+      "host": {
+        "sourcePath": "var/app/rabbitmq-data"
+      }
+    }
+  ]
+}
