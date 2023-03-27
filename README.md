@@ -2,11 +2,13 @@ Backend Desenvolvido em **Spring Boot** juntamento com **Postgres**, **RabbitMQ*
 
 ### Algumas informações
 
-- A aplicação CPF VALIDATOR está hospedada na AWS Elastic BeanStalk e não no Heroku [ PAGO ]:
-  - link URL BASE:
-  ```sh
-      $ http://cpfvalidator-env.eba-vutbp3fp.us-east-2.elasticbeanstalk.com
-  ```
+- A aplicação [CPF VALIDATOR](https://github.com/lucaswilker14/cpf-validator) está hospedada na AWS Elastic BeanStalk e não no Heroku [ PAGO ]:
+
+
+- URL BASE:
+```sh
+ $ http://cpfvalidator-env.eba-vutbp3fp.us-east-2.elasticbeanstalk.com
+```
 
 #### Problema base:
 No cooperativismo, cada associado possui um voto e as decisões são tomadas em assembleias, por votação.
