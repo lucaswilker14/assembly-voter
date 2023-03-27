@@ -66,6 +66,24 @@
         "db-postgres",
         "rabbitmq"
       ],
+      "environment": [
+        {
+          "name": "SPRING_RABBITMQ_HOST",
+          "value": "rabbitmq"
+        },
+        {
+          "name": "SPRING_RABBITMQ_PORT",
+          "value": "5672"
+        },
+        {
+          "name": "SPRING_RABBITMQ_USERNAME",
+          "value": "admin"
+        },
+        {
+          "name": "SPRING_RABBITMQ_PASSWORD",
+          "value": "admin"
+        }
+      ],
       "essential": true,
       "memory": 128
     }

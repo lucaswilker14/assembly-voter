@@ -37,7 +37,7 @@ public class AgendaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(agendaService.createNewAgenda(agendaDTO));
     }
 
-    @GetMapping()
+    @GetMapping("/")
     @ApiResponse(responseCode = "200",description = "Return all Agendas")
     @Operation(summary = "Return All Agenda registered in DB")
     public ResponseEntity<Object> listAgenda() {
