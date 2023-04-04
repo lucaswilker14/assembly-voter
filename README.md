@@ -6,8 +6,8 @@ Backend Desenvolvido em **Spring Boot** juntamento com **Postgres**, **RabbitMQ*
 - Para fins de didática, assumi que associados com o último dígito do CPF sendo **PAR**, poderá votar. 
 
 - Exemplo: 
-   * CPF: 154.724.724-46 [ PODERÁ VOTAR ]
-   * CPF: 624.554.117-03 [ NÃO PODERÁ VOTAR ]
+   * CPF: 154.724.724-4**6** [ PODERÁ VOTAR ]
+   * CPF: 624.554.117-0**3** [ NÃO PODERÁ VOTAR ]
 
 
 - URL BASE:
