@@ -3,6 +3,11 @@ Backend Desenvolvido em **Spring Boot** juntamento com **Postgres**, **RabbitMQ*
 ### Algumas informações
 
 - A aplicação [CPF VALIDATOR](https://github.com/lucaswilker14/cpf-validator) está hospedada na AWS Elastic BeanStalk e não no Heroku [ PAGO ]:
+- Para fins de didática, assumi que associados com o último dígito do CPF sendo **PAR**, poderá votar. 
+
+- Exemplo: 
+   * CPF: 154.724.724-46 [ PODERÁ VOTAR ]
+   * CPF: 624.554.117-03 [ NÃO PODERÁ VOTAR ]
 
 
 - URL BASE:
