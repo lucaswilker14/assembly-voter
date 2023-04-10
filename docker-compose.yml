@@ -1,5 +1,4 @@
 version: '3.9'
-
 services:
   rabbitmq:
     container_name: rabbitmq
@@ -21,7 +20,6 @@ services:
     restart: always
     networks:
       - localnet
-
   db-postgres:
     container_name: db-postgres
     restart: always
@@ -33,7 +31,6 @@ services:
       POSTGRES_PASSWORD: 123
     networks:
       - localnet
-
   assembly-voter:
     container_name: assembly-voter
     build: .
@@ -50,7 +47,6 @@ services:
     networks:
       - localnet
     restart: on-failure
-
 networks:
   localnet:
     driver: bridge
