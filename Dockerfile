@@ -1,7 +1,7 @@
 FROM gradle:latest AS build
 COPY --chown=gradle:gradle . /app
 WORKDIR /app
-RUN gradle clean build -x test
+RUN gradle clean build
 
 FROM openjdk:18-alpine
 EXPOSE 8080 5432 15672 5672
