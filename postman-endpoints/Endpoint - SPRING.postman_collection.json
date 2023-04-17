@@ -58,13 +58,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{springBaseURL}}/agenda/1/result",
+							"raw": "{{springBaseURL}}/agenda/{{idAgenda}}/result",
 							"host": [
 								"{{springBaseURL}}"
 							],
 							"path": [
 								"agenda",
-								"1",
+								"{{idAgenda}}",
 								"result"
 							]
 						}
@@ -105,13 +105,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{springBaseURL}}/associate/56606581",
+							"raw": "{{springBaseURL}}/associate/{{cpfAssociado}}",
 							"host": [
 								"{{springBaseURL}}"
 							],
 							"path": [
 								"associate",
-								"56606581"
+								"{{cpfAssociado}}"
 							]
 						}
 					},
@@ -140,14 +140,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{springBaseURL}}/associate/status/99954351019",
+							"raw": "{{springBaseURL}}/associate/status/{{cpfAssociado}}",
 							"host": [
 								"{{springBaseURL}}"
 							],
 							"path": [
 								"associate",
 								"status",
-								"99954351019"
+								"{{cpfAssociado}}"
 							]
 						}
 					},
@@ -160,7 +160,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"associateCpf\":\"9514\",\r\n    \"vote\": \"yes\",\r\n    \"agendaId\":\"1\",\r\n    \"sessionId\": \"252\"\r\n}",
+							"raw": "{\r\n    \"associateCpf\":{{cpfAssociado}},\r\n    \"vote\": \"yes\",\r\n    \"agendaId\":{{agendaId}},\r\n    \"sessionId\": \"1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -209,7 +209,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"agendaId\": \"2\",\r\n    \"sessionDurationSec\": 120\r\n}",
+							"raw": "{\r\n    \"agendaId\": {{agendaId}},\r\n    \"sessionDurationSec\": 120\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -217,14 +217,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{springBaseURL}}/voting-session/open/1",
+							"raw": "{{springBaseURL}}/voting-session/open/{{sessionId}}",
 							"host": [
 								"{{springBaseURL}}"
 							],
 							"path": [
 								"voting-session",
 								"open",
-								"1"
+								"{{sessionId}}"
 							]
 						}
 					},
@@ -237,7 +237,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"agendaId\": \"1\"\r\n}",
+							"raw": "{\r\n    \"agendaId\": {{agendaId}}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

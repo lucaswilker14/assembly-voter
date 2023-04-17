@@ -12,9 +12,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/cpf/validator/86671514593",
+					"raw": "{{cpfbaseURL}}/cpf/validator/86671514593",
 					"host": [
-						"{{baseURL}}"
+						"{{cpfbaseURL}}"
 					],
 					"path": [
 						"cpf",
@@ -31,14 +31,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/cpf/validator/111111",
+					"raw": "{{cpfbaseURL}}/cpf/validator/743267428",
 					"host": [
-						"{{baseURL}}"
+						"{{cpfbaseURL}}"
 					],
 					"path": [
 						"cpf",
 						"validator",
-						"111111"
+						"743267428"
 					]
 				}
 			},
@@ -50,9 +50,9 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/cpf/generate",
+					"raw": "{{cpfbaseURL}}/cpf/generate",
 					"host": [
-						"{{baseURL}}"
+						"{{cpfbaseURL}}"
 					],
 					"path": [
 						"cpf",
@@ -68,9 +68,9 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/cpf/generatelist?qtd=1",
+					"raw": "{{cpfbaseURL}}/cpf/generatelist?qtd=6",
 					"host": [
-						"{{baseURL}}"
+						"{{cpfbaseURL}}"
 					],
 					"path": [
 						"cpf",
@@ -79,7 +79,7 @@
 					"query": [
 						{
 							"key": "qtd",
-							"value": "1"
+							"value": "6"
 						}
 					]
 				}
