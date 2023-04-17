@@ -10,8 +10,10 @@ services:
     volumes:
       - ./docker/data-rabbitmq:/var/lib/rabbitmq/
     environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=admin
+      - RMQ_HOST=rabbitmq
+      - RMQ_PORT=5672
+      - RMQ_USER=admin
+      - RMQ_PASSWORD=admin
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 10s
@@ -27,8 +29,10 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: assembly-voter-db
-      POSTGRES_PASSWORD: 123
+      - POSTGRES_HOST=db-postgres
+      - POSTGRES_DB=assembly-voter-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
     networks:
       - localnet
   assembly-voter:
@@ -40,10 +44,15 @@ services:
       rabbitmq:
         condition: service_healthy
     environment:
-      - SPRING_RABBITMQ_HOST=rabbitmq
-      - SPRING_RABBITMQ_PORT=5672
-      - SPRING_RABBITMQ_USERNAME=admin
-      - SPRING_RABBITMQ_PASSWORD=admin
+      - POSTGRES_HOST=db-postgres
+      - POSTGRES_DB=assembly-voter-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+      - RMQ_HOST=rabbitmq
+      - RMQ_PORT=5672
+      - RMQ_USER=admin
+      - RMQ_PASSWORD=admin
+      - ENV_PROFILE=prod
     networks:
       - localnet
     restart: on-failure
