@@ -89,7 +89,7 @@ desenvolvido cada módulo da aplicação e quando finalizada, *merjada* para a d
 
 - [Docker](https://docs.docker.com/get-docker/)
 
-### Rodar Aplicação:
+### Rodar Aplicação - Docker:
 
 ```sh
 $ docker compose up
@@ -106,6 +106,10 @@ $ 8080
 ```sh
 $ http://localhost:8080/api/v1/assembly-voter
 ```
+---
+### Rodar Aplicação - K8S
+Caso queria rodar a aplicação com k8s, segue [repo](https://github.com/lucaswilker14/assembly-voter-ms-k8s/tree/main)
+
 ---
 ### Documentação da API
 
